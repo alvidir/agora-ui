@@ -13,6 +13,7 @@
     "google-protobuf": "^3.19.3",
     "grpc-web": "^1.3.0",
     "vue": "^3.2.13",
+    "vue-cards": "github:alvidir/vue-cards",
     "vue-router": "^4.0.3"
   },
   "devDependencies": {

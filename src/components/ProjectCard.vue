@@ -18,7 +18,7 @@ import { RegularCard } from "vue-cards/src/main";
       </span>
       <span class="separator">|</span>
       <span>
-        <i class="bx bxs-pyramid"></i>
+        <i class="bx bxs-cuboid"></i>
         4
       </span>
       <span class="separator">|</span>
@@ -39,8 +39,14 @@ import { RegularCard } from "vue-cards/src/main";
 @import "fibonacci-styles";
 
 .project-card {
+  @extend .medium-fade;
   width: $fib-13 * 1px;
   height: $fib-12 * 1px;
+
+  &:hover {
+    @extend .shadow-box;
+    transform: translateY(-5px);
+  }
 
   &:not(:hover) {
     .description,
@@ -69,8 +75,17 @@ import { RegularCard } from "vue-cards/src/main";
     color: var(--color-text-secondary);
     transition: color $medium-fade;
 
-    .separator {
+    span.separator {
       color: var(--color-text-disabled);
+    }
+
+    span:not(.separator) {
+      display: flex;
+      align-items: center;
+
+      i {
+        margin-right: $fib-4 * 1px;
+      }
     }
   }
 }

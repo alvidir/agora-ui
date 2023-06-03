@@ -29,7 +29,7 @@ const onSignupClick = () => {
       <label>Characters</label>
     </button>
     <button>
-      <i class="bx bx-pyramid"></i>
+      <i class="bx bx-cuboid"></i>
       <label>Objects and artifacs</label>
     </button>
     <button>

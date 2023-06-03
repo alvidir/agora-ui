@@ -1,18 +1,23 @@
+<script setup lang="ts">
+import ProjectCard from "@/components/ProjectCard.vue";
+</script>
+
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png" />
-    <HelloWorld msg="Welcome to Your Vue.js + TypeScript App" />
+    <project-card
+      v-for="i in [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]"
+      :key="i"
+    ></project-card>
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from "vue";
-import HelloWorld from "@/components/HelloWorld.vue"; // @ is an alias to /src
+<style scoped lang="scss">
+@import "fibonacci-styles";
 
-export default defineComponent({
-  name: "HomeView",
-  components: {
-    HelloWorld,
-  },
-});
-</script>
+.home {
+  display: grid;
+  grid-template-columns: repeat(3, $fib-13 * 1px);
+  column-gap: $fib-6 * 1px;
+  row-gap: $fib-6 * 1px;
+}
+</style>

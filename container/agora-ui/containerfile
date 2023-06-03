@@ -1,0 +1,19 @@
+FROM docker.io/node:19.8.1 as builder
+
+RUN apt update
+
+WORKDIR /app
+COPY . .
+
+RUN PKG_MANAGER=apt make
+
+######## Start a new stage from scratch #######
+FROM docker.io/nginx:1.23-alpine
+
+COPY --from=builder /app/dist /etc/static
+COPY --from=builder /app/nginx/nginx.conf /etc/nginx/conf.d/default.conf
+
+COPY scripts/start-nginx.sh /usr/bin/start-nginx.sh
+RUN chmod +x /usr/bin/start-nginx.sh
+
+ENTRYPOINT [ "start-nginx.sh" ]

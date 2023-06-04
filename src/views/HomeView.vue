@@ -68,7 +68,7 @@ const filter = ref("");
 
   .search-field {
     width: $fib-14 * 1px;
-    margin-right: $fib-6 * 1px;
+    margin-right: $fib-5 * 1px;
   }
 }
 </style>

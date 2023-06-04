@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { ref, nextTick } from "vue";
-import ColorPicker from "@/components/ColorPicker.vue";
 
 const active = ref(false);
 const valid = ref(false);
@@ -14,6 +13,7 @@ interface Field {
 
 const field = ref<Field | undefined>();
 const projectname = ref("");
+const highlight = ref(false);
 
 const activate = () => {
   active.value = true;
@@ -23,7 +23,7 @@ const activate = () => {
 const onInput = () => {
   valid.value = false;
 
-  const name = projectname.value.trim() ?? "";
+  //   const name = projectname.value.trim() ?? "";
   //   error.value = fileStore.check(props.pathname, name);
 
   valid.value = !error.value;
@@ -42,7 +42,7 @@ const submit = () => {
   if (!valid.value) return;
   active.value = false;
 
-  const name = projectname.value.trim() ?? "";
+  //   const name = projectname.value.trim() ?? "";
   cancel();
 };
 </script>
@@ -67,6 +67,7 @@ const submit = () => {
         <span class="title">
           <i class="bx bxs-bulb"></i>&nbsp;Create a new project
         </span>
+        <small class="subtitle"> Let's begin giving it a catchy name. </small>
       </template>
       <regular-field
         v-model="projectname"
@@ -77,6 +78,9 @@ const submit = () => {
         @input="onInput"
         large
       ></regular-field>
+      <check-button :class="{ active: highlight }" v-model="highlight">
+        Highlight this project
+      </check-button>
       <template #footer>
         <submit-button :disabled="!valid" :loading="fetching" @submit="submit">
           Create
@@ -115,5 +119,17 @@ const submit = () => {
       width: fit-content;
     }
   }
+}
+
+.check-button {
+  margin-top: $fib-6 * 1px;
+
+  &:not(.active) {
+    color: var(--color-text-disabled);
+  }
+}
+
+input {
+  margin: 0.4rem;
 }
 </style>

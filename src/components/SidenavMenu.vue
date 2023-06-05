@@ -10,13 +10,8 @@ interface Props {
 
 defineProps<Props>();
 
-const onSignoutClick = () => {
-  window.location.assign(urlJoin(config.AUTH_BASE_URI, "logout"));
-};
-
-const onSignupClick = () => {
-  window.location.assign(urlJoin(config.AUTH_BASE_URI, "signup"));
-};
+const signoutUrl = urlJoin(config.AUTH_BASE_URI, "logout");
+const archiveUrl = config.FILEBROWSER_BASE_URI;
 </script>
 
 <template>
@@ -52,8 +47,8 @@ const onSignupClick = () => {
       <profile-menu
         class="tooltip bottom delayed"
         :profile="profile"
-        @signout="onSignoutClick"
-        @signup="onSignupClick"
+        :signoutUrl="signoutUrl"
+        :archiveUrl="archiveUrl"
       />
     </div>
   </dock-menu>

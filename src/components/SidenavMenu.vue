@@ -41,10 +41,6 @@ const onSignupClick = () => {
       <label>Events</label>
     </button>
     <span></span>
-    <button>
-      <i class="bx bx-cabinet"></i>
-      <label>Files</label>
-    </button>
     <div class="item">
       <img
         v-if="profile.picture"

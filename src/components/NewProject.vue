@@ -64,10 +64,8 @@ const submit = () => {
     </submit-button>
     <regular-card :class="{ active: active }" @close="cancel" closable>
       <template #header>
-        <span class="title">
-          <i class="bx bxs-bulb"></i>&nbsp;Create a new project
-        </span>
-        <small class="subtitle"> Let's begin giving it a catchy name. </small>
+        <span> <i class="bx bxs-bulb"></i>&nbsp;Create a new project </span>
+        <small>Let's begin with a catchy name...</small>
       </template>
       <regular-field
         v-model="projectname"

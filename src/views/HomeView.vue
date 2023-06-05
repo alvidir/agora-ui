@@ -33,7 +33,8 @@ const filter = ref("");
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: $fib-11 * 1px 0;
+  margin-top: $fib-11 * 1px;
+  margin-bottom: $fib-9 * 1px;
   min-width: fit-content;
   color: var(--color-text-primary);
 
@@ -64,7 +65,7 @@ const filter = ref("");
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-bottom: $fib-10 * 1px;
+  margin-bottom: $fib-11 * 1px;
 
   .search-field {
     width: $fib-14 * 1px;

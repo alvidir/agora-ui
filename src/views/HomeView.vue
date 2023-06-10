@@ -1,9 +1,44 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { computed, onBeforeMount, ref } from "vue";
 import ProjectsGrid from "@/components/ProjectsGrid.vue";
 import NewProject from "@/components/NewProject.vue";
+import { useProjectStore } from "@/stores/project";
+import { useWarningStore } from "@/stores/warning";
+import { Warning } from "@/warning";
+import * as rpc from "@/services/agora.rpc";
+import { Project } from "@/project";
 
+const projectStore = useProjectStore();
+const warningStore = useWarningStore();
+
+const fetching = ref(false);
 const filter = ref("");
+
+const fetchProjectList = () => {
+  rpc
+    .listProjects()
+    .then((projects: Array<Project>) => {
+      projects.forEach((project) => projectStore.addProject(project));
+    })
+    .catch((error: Warning) => {
+      warningStore.push(error);
+    })
+    .finally(() => {
+      fetching.value = false;
+    });
+};
+
+const filteredProjects = computed((): Array<Project> => {
+  if (filter.value.length) {
+    return projectStore
+      .listProjects()
+      .filter((project) => project.name.includes(filter.value));
+  }
+
+  return projectStore.listProjects();
+});
+
+onBeforeMount(() => fetchProjectList());
 </script>
 
 <template>
@@ -23,7 +58,7 @@ const filter = ref("");
     ></search-field>
     <new-project></new-project>
   </div>
-  <projects-grid></projects-grid>
+  <projects-grid :projects="filteredProjects"></projects-grid>
 </template>
 
 <style scoped lang="scss">

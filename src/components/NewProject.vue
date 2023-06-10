@@ -1,9 +1,17 @@
 <script setup lang="ts">
+import { checkProjectName } from "@/project";
 import { ref, nextTick } from "vue";
+import * as rpc from "@/services/agora.rpc";
+import { Project } from "@/project";
+import { Warning } from "@/warning";
+import { useWarningStore } from "@/stores/warning";
+import { useProjectStore } from "@/stores/project";
+
+const projectStore = useProjectStore();
+const warningStore = useWarningStore();
 
 const active = ref(false);
-const valid = ref(false);
-const error = ref<string | undefined>();
+const error = ref("");
 const fetching = ref(false);
 
 interface Field {
@@ -21,29 +29,49 @@ const activate = () => {
 };
 
 const onInput = () => {
-  valid.value = false;
-
-  //   const name = projectname.value.trim() ?? "";
-  //   error.value = fileStore.check(props.pathname, name);
-
-  valid.value = !error.value;
+  const name = projectname.value.trim();
+  if (name) {
+    error.value = checkProjectName(name) ?? "";
+  } else {
+    error.value = "";
+  }
 };
 
 const cancel = () => {
   projectname.value = "";
+  highlight.value = false;
   field.value?.blur();
 
   active.value = false;
-  valid.value = false;
-  error.value = undefined;
+  error.value = "";
 };
 
 const submit = () => {
-  if (!valid.value) return;
+  const name = projectname.value.trim() ?? "";
+  if (!name || error.value) return;
   active.value = false;
 
-  //   const name = projectname.value.trim() ?? "";
+  const project = {
+    id: "",
+    name: name,
+    description: "",
+    highlight: highlight.value,
+    cardinalities: {},
+  };
+
   cancel();
+
+  rpc
+    .createProject(project)
+    .then((project: Project) => {
+      projectStore.addProject(project);
+    })
+    .catch((error: Warning) => {
+      warningStore.push(error);
+    })
+    .finally(() => {
+      fetching.value = false;
+    });
 };
 </script>
 
@@ -80,7 +108,11 @@ const submit = () => {
         Highlight this project
       </check-button>
       <template #footer>
-        <submit-button :disabled="!valid" :loading="fetching" @submit="submit">
+        <submit-button
+          :disabled="!projectname.trim() || !!error"
+          :loading="fetching"
+          @submit="submit"
+        >
           Create
         </submit-button>
       </template>

@@ -1,36 +1,39 @@
 <script setup lang="ts">
+import { Project } from "@/project";
 import { RegularCard } from "vue-cards/src/main";
+import CardinalitiesList from "./CardinalitiesList.vue";
+import { CardinalityInfo, newCardinality } from "@/cardinality";
+import { computed } from "vue";
+
+interface Props {
+  project: Project;
+}
+
+const props = defineProps<Props>();
+
+const cardinalities = computed((): Array<CardinalityInfo> => {
+  return Object.entries(props.project.cardinalities).map(
+    ([name, count]): CardinalityInfo => {
+      return newCardinality(name, count);
+    }
+  );
+});
 </script>
 
 <template>
   <regular-card class="project-card">
     <template #header>
-      <h2>Project name</h2>
+      <h2>{{ project.name }}</h2>
     </template>
-    <span class="description">
-      This should be a brief description about the project. It could explain a
-      main aspect of it plot in order to be indentified rapidly.
+    <span v-if="project.description" class="description">
+      {{ project.description }}
+    </span>
+    <span v-else class="description">
+      No description available for this project yet. Let your imagination run
+      wild and fill this space with the wonders of your creation!
     </span>
     <template #footer>
-      <span>
-        <i class="bx bxs-face"></i>
-        12
-      </span>
-      <span class="separator">|</span>
-      <span>
-        <i class="bx bxs-cuboid"></i>
-        4
-      </span>
-      <span class="separator">|</span>
-      <span>
-        <i class="bx bxs-landscape"></i>
-        39
-      </span>
-      <span class="separator">|</span>
-      <span>
-        <i class="bx bxs-calendar-event"></i>
-        171
-      </span>
+      <cardinalities-list :cardinalities="cardinalities"></cardinalities-list>
     </template>
   </regular-card>
 </template>
@@ -68,25 +71,6 @@ import { RegularCard } from "vue-cards/src/main";
     text-overflow: ellipsis;
     color: var(--color-text-secondary);
     transition: color $medium-fade;
-  }
-
-  .footer {
-    justify-content: space-around;
-    color: var(--color-text-secondary);
-    transition: color $medium-fade;
-
-    span.separator {
-      color: var(--color-text-disabled);
-    }
-
-    span:not(.separator) {
-      display: flex;
-      align-items: center;
-
-      i {
-        margin-right: $fib-4 * 1px;
-      }
-    }
   }
 }
 </style>

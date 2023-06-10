@@ -6,7 +6,6 @@ import { Code, getWarning } from "./warning";
 import { Profile, loadAndApply } from "vue-profile/src/profile";
 import SidenavMenu from "@/components/SidenavMenu.vue";
 import WarningList from "@/components/WarningList.vue";
-import config from "@/config.json";
 
 const warningStore = useWarningStore();
 
@@ -26,10 +25,7 @@ getProfile()
     <router-link to="/">Home</router-link> |
     <router-link to="/about">About</router-link>
   </nav> -->
-  <sidenav-menu
-    :logo="config.ALVIDIR_LOGO_URI"
-    :profile="profile"
-  ></sidenav-menu>
+  <sidenav-menu :profile="profile"></sidenav-menu>
   <warning-list></warning-list>
   <div id="main">
     <router-view />

@@ -2,16 +2,22 @@
 import urlJoin from "url-join";
 import { Profile } from "vue-profile/src/profile";
 import config from "@/config.json";
+import { computed } from "vue";
+import router from "@/router";
 
 interface Props {
-  logo: string;
   profile: Profile;
 }
 
 defineProps<Props>();
 
+const logo = config.ALVIDIR_LOGO_URI;
 const signoutUrl = urlJoin(config.AUTH_BASE_URI, "logout");
-const archiveUrl = config.FILEBROWSER_BASE_URI;
+const filebrowserUrl = config.FILEBROWSER_BASE_URI;
+
+const projectId = computed((): string | undefined => {
+  return router.currentRoute.value.path.split("/").at(1);
+});
 </script>
 
 <template>
@@ -19,22 +25,22 @@ const archiveUrl = config.FILEBROWSER_BASE_URI;
     <button class="no-hover no-tooltip">
       <img class="logo" :src="logo" />
     </button>
-    <button>
+    <router-link v-if="projectId" class="item" :to="`/${projectId}/characters`">
       <i class="bx bx-face"></i>
       <label>Characters</label>
-    </button>
-    <button>
+    </router-link>
+    <router-link v-if="projectId" class="item" :to="`/${projectId}/objects`">
       <i class="bx bx-cuboid"></i>
       <label>Objects and artifacs</label>
-    </button>
-    <button>
+    </router-link>
+    <router-link v-if="projectId" class="item" :to="`/${projectId}/locations`">
       <i class="bx bx-landscape"></i>
       <label>Locations</label>
-    </button>
-    <button>
+    </router-link>
+    <router-link v-if="projectId" class="item" :to="`/${projectId}/events`">
       <i class="bx bx-calendar-event"></i>
       <label>Events</label>
-    </button>
+    </router-link>
     <span></span>
     <div class="item">
       <img
@@ -45,10 +51,11 @@ const archiveUrl = config.FILEBROWSER_BASE_URI;
       />
       <i v-else class="fallback-avatar bx bx-user"></i>
       <profile-menu
-        class="tooltip bottom delayed"
+        class="tooltip delayed"
+        :class="projectId ? 'bottom' : 'top'"
         :profile="profile"
         :signoutUrl="signoutUrl"
-        :archiveUrl="archiveUrl"
+        :archiveUrl="filebrowserUrl"
       />
     </div>
   </dock-menu>
